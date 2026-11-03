@@ -1334,7 +1334,11 @@ test("cidrv6 compiled validates prefix range and address", () => {
   invalid(aot, "::1/-1");
   invalid(aot, "not-an-address/64");
   invalid(aot, "::1");
+  // a non-integer prefix number round-trips through Number(), so it needs its own rejection
+  invalid(aot, "::1/64.5");
+  invalid(aot, "::1/NaN");
   expectMatch(z.cidrv6(), "::1/129");
+  expectMatch(z.cidrv6(), "::1/64.5");
 });
 
 // === Runtime islands ===

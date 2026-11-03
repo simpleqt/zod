@@ -995,6 +995,8 @@ export function isValidCIDRv6(value: string): boolean {
   if (!prefix) return false;
   const prefixNum = Number(prefix);
   if (`${prefixNum}` !== prefix) return false;
+  // `Number` accepts decimal notation, so "64.5" survives the round-trip above
+  if (!Number.isInteger(prefixNum)) return false;
   if (prefixNum < 0 || prefixNum > 128) return false;
   return isValidIPv6(address);
 }
